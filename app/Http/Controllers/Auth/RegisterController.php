@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -33,8 +34,10 @@ class RegisterController extends Controller
 
     public function __construct()
     {
-        $this->redirectTo = route('dashboard');
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest');
+        $this->middleware('guest:user');
+        $this->middleware('guest:customer');
+
     }
 
     /**
@@ -53,10 +56,28 @@ class RegisterController extends Controller
     }
 
     /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+
+     public function showCustomerRegisterForm()
+     {
+        return view('auth.register', ['url' => 'customer']);
+    }
+ 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+ 
+     public function showUserRegisterForm()
+     {
+        return view('auth.register', ['url' => 'user']);
+    }
+
+    /**
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\Models\User
+     * @return mixed;
      */
     protected function create(array $data)
     {
@@ -66,4 +87,38 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    
+     protected function createUser(Request $request)
+     {
+        $this->validator($request->all())->validate();
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        return redirect()->intended('login/user');
+    }
+ 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+
+     protected function createCustomer(Request $request)
+     {
+        $this->validator($request->all())->validate();
+        Customer::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            '[password]' => Hash::make($request->password),
+        ]);
+        return redirect()->intended('login/customer');
+ }
 }

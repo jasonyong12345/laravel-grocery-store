@@ -11,12 +11,15 @@
         @endif
 
         <!-- Use Laravel's built-in authentication views and routes -->
-        <div>
-            <a href="{{ route('login') }}">Login</a>
-        </div>
         <br>
         <div>
-            <a href="{{ route('register') }}">Register</a>
+        <a href="{{ route('user.login') }}">User Login</a>
+        <a href="{{ route('user.register') }}">User Registration</a>
+        </div>
+        <div>
+        <a href="{{ route('customer.login') }}">Customer Login</a>
+       
+       <a href="{{ route('customer.register') }}">Customer Registration</a>
         </div>
     </body>
 </html>

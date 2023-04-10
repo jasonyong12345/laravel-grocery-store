@@ -12,9 +12,7 @@
 
                     <nav>
                         <ul>
-                            <li><a href="{{ route('categories.index') }}">Categories</a></li>
-                            <li><a href="{{ route('products.index') }}">Products</a></li>
-                            <li><a href="{{ route('carts.index') }}">Carts</a></li>
+                        <li><a href="{{ route('carts.index') }}">Carts</a></li>
                         </ul>
                     </nav>
                 </div>
